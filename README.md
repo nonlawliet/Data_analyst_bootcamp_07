@@ -5,6 +5,7 @@ All my data projects in bootcamp.
 - Google Sheets
 - SQL
 - R Programming
+- Python
 - Essential Python for Data Analyst
 - Dashboard
 
