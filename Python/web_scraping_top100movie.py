@@ -1,4 +1,4 @@
-# Web Scarping from IMDB top 100 movies
+# Web Scraping from IMDB top 100 movies
 !pip install gazpacho
 
 from gazpacho import Soup
