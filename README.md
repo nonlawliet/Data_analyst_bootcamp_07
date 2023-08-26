@@ -8,6 +8,7 @@ All my data projects in bootcamp.
 - Essential Statistics
 - Essential Machine Learning
 - Intro to Python
+- Web Scraping
 - Essential Python for Data Analyst (Pandas Project)
   - https://datalore.jetbrains.com/notebook/pMPp0Qh7CNspxHEjYllaBw/RUvkYsdDXBu4fIeMjhoVfv
 - Dashboard
