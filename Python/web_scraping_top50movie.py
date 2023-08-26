@@ -1,4 +1,4 @@
-# Web Scraping from IMDB top 100 movies
+# Web Scraping from IMDB top 50 movies
 !pip install gazpacho
 
 from gazpacho import Soup
@@ -84,3 +84,23 @@ plt.xlabel("Year");
 plt.ylabel("Runtime");
 plt.xticks(range(df_sort['year'].min(), df_sort['year'].max(), 20))
 plt.show()
+
+## Evolution of movie score over years
+plt.scatter(x=df_sort['year'], y=df_sort['score']);
+plt.xlabel("Year");
+plt.ylabel("Score");
+plt.xticks(range(df_sort['year'].min(), df_sort['year'].max(), 20))
+plt.show()
+
+## Which genres is the most popular by score
+### group by genre, use this df
+df_split_genre = df
+df_split_genre['new_genre'] = df_split_genre['genre'].str.split(', ')
+df_split_genre = df_split_genre.explode('new_genre')
+
+group_new_genre = round(df_split_genre.groupby('new_genre')['score'].mean(), 2).reset_index()
+
+group_new_genre.sort_values('score', ascending=False).head(10)
+
+## Which movie genre has produced the most
+df_split_genre['new_genre'].value_counts().reset_index()
