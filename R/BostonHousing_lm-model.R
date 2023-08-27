@@ -21,7 +21,6 @@ summarise(df, min(medv), max(medv), mean(medv), median(medv))
 new_df <- subset(df, df$medv > lower & df$medv < upper)
 
 ## 1. split data
-
 train_test_split <- function(data, trainRatio = 0.8) {
   set.seed(42)
   n <- nrow(data)
@@ -37,7 +36,7 @@ test_data <- split_data$test
 
 ## 2. train model
 ctrl <- trainControl(method = "cv",
-                     number = 10,
+                     number = 5,
                      verboseIter = TRUE)
 set.seed(42)
 (lm_model <- train(medv ~.,
@@ -46,15 +45,29 @@ set.seed(42)
                    preProcess = c("center", "scale"),
                    trControl = ctrl))
 
-## 3. score
-p <- predict(object = lm_model, newdata = test_data)
+k_grid <- data.frame(k = c(3,5,7,9,11))
+set.seed(42)
+(knn_model <- train(medv ~.,
+                   data = train_data,
+                   method = "knn",
+                   metric = "Rsquared",
+                   tuneGrid = k_grid,
+                   preProcess = c("center", "scale"),
+                   trControl = ctrl))
 
+## 3. score
+p_lm <- predict(object = lm_model, newdata = test_data)
+p_knn <- predict(object = knn_model, newdata = test_data)
 ## 4. evaluate
 
-R2_Score(p, test_data$medv)
-RMSE(p, test_data$medv)
+R2_lm <- R2_Score(p_lm, test_data$medv)
+R2_knn <- R2_Score(p_knn, test_data$medv)
+
+print(paste(
+  "The R2 of lm-model:", round(R2_lm, 2), "And the R2 of knn-model:", round(R2_knn, 2)
+))
 
 ggplot() +
-  geom_point(aes(x = p, y = test_data$medv)) +
-  labs(x = "Predict medv", y = "Test medv") +
+  geom_point(aes(x = p_lm, y = test_data$medv)) +
+  labs(x = "Predict-lm medv", y = "Test medv") +
   theme_classic()
